@@ -1,42 +1,41 @@
 # openrepo
 
-OpenRepo is a web-based server for managing and hosting repositories containing Debian apt/deb, Redhat rpm, and generic package files.
+OpenRepo - сервер основанный на WEB для управления и размещения репозиториев содержащих Debian apt/deb, Redhat rpm и общие файлы пакетов.
 
-The server supports:
+Сервер поддерживает:
 
-  - RPM, Deb, Generic repository generation and hosting compatible with Debian/Ubuntu apt-get and RedHat yum tools
-  - Package upload, deletion, copying, and promotion (e.g., for easily moving packages through dev, QA, beta, production repos)
-  - PGP signing key creation and management
-  - Version management
-  - User read/write access control for each repo
+  - Генерация RPM, Deb, Generic репозиториев, совместимых с инструментами Debian/Ubuntu apt-get и RedHat yum, и их размещение
+  - Загрузка пакетов, удаление, копирование и продвижение (Например, для легкого перемещения пакетов между dev, QA, beta, production репозиториев)
+  - Создание и управление ключами подписи PGP
+  - Управление версиями
+  - Контроль доступа к записи/чтению для пользователей к каждому репозиторию
   - REST API
-  - CLI app to integrate with CI
+  - Приложение CLI для интеграции с CI (CLI - Command Line Interface, интерфейс командной строки; CI - Continuous Integration, непрерывная интеграция)
 
 
 ![OpenRepo Demo Video](https://github.com/openkilt/openrepo/blob/master/util/doc_images/openrepo-demo.gif?raw=true)
 
-## Getting Started
+## Начало работы
 
-The preferred method for running OpenRepo is with Docker using the provided docker-compose.yml configuration file.  This will run the necessary services 
-as well as instantiate a PostgreSQL database.  All persistent files (i.e., the database, cache data, PGP keys, and the package files) are stored in a relative folder named 
-openrepo-data.
+Предпочтительный способ запуска OpenRepo - это Docker, используя приложенный файл конфигурации docker-compose.yml. Это запустит необходимые сервисы и базу данных PostgreSQL. Все файлы, необходимые к хранению (persistent data files), такие как база данных, кэш, ключи PGP и файлы пакетов, находятся в отдельной попке с именем openrepo-data.
 
-First ensure that you have installed Docker and the [Docker Compose plugin](https://docker-docs.netlify.app/compose/install/)
+ Для начала убедитесь, что у Вас установлен Docker и [Docker Compose plugin](https://docker-docs.netlify.app/compose/install/)
 
 
-To start the server:
+Чтобы запустить сервер пропишите в терминале:
 
-    wget https://raw.githubusercontent.com/openkilt/openrepo/master/docker-compose.yml
+    wget https://raw.githubusercontent.com/dushenka/ORPersonal/master/docker-compose.yml
+    
     docker-compose up -d
 
-You can now navigate to the server on http://localhost:7376
+Теперь Вы можете зайти на сервер по ссылке http://localhost:80
 
-The default credentials are:
+Стандартно для входа в учетную запись админа используются:
 
-    username: admin
-    password: admin
+    username(имя):    admin
+    password(пароль): admin
 
-If desired, it is possible to point to an alternative PostgreSQL server by updating the "OPENREPO_PG" environment variables in the docker-compose file.
+Если есть желание, можно перенаправить на .......... to point to an alternative PostgreSQL server by updating the "OPENREPO_PG" environment variables in the docker-compose file.
 
 
 ## CI Integration
