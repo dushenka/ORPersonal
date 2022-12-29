@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   nginx:
-    image: openkilt/openrepo:latest
+    image: dushenka/ORPersonal:latest
     command: nginx
     restart: unless-stopped
     ports:
@@ -14,7 +14,7 @@ services:
 
 
   django:
-    image: openkilt/openrepo:latest
+    image: dushenka/ORPersonal:latest
     expose:
       - "8000"
     command: run_openrepoweb
@@ -32,7 +32,7 @@ services:
 
 
   worker:
-    image: openkilt/openrepo:latest
+    image: dushenka/ORPersonal:latest
     command: ./django/manage.py runworker
     volumes:
       - ./openrepo-data:/var/lib/openrepo
