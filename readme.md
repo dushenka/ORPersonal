@@ -13,7 +13,7 @@ OpenRepo - сервер основанный на WEB для управлени�
   - Приложение CLI для интеграции с CI (CLI - Command Line Interface, интерфейс командной строки; CI - Continuous Integration, непрерывная интеграция)
 
 
-![OpenRepo Demo Video](https://github.com/openkilt/openrepo/blob/master/util/doc_images/openrepo-demo.gif?raw=true)
+![OpenRepo Demo Video](https://github.com/dushenka/ORPersonal/blob/master/util/doc_images/openrepo-demo.gif?raw=true)
 
 ## Начало работы
 
