@@ -19,7 +19,7 @@ OpenRepo - сервер основанный на WEB для управлени�
 
 Предпочтительный способ запуска OpenRepo - это Docker, используя приложенный файл конфигурации docker-compose.yml. Это запустит необходимые сервисы и базу данных PostgreSQL. Все файлы, необходимые к хранению (persistent data files), такие как база данных, кэш, ключи PGP и файлы пакетов, находятся в отдельной попке с именем openrepo-data.
 
- Для начала убедитесь, что у Вас установлен Docker и [Docker Compose plugin](https://docker-docs.netlify.app/compose/install/)
+ Для начала убедитесь, что у Вас установлен [Docker](https://docker-docs.netlify.app/install/#server) и [Docker Compose plugin](https://docker-docs.netlify.app/compose/install/)
 
 
 Чтобы запустить сервер пропишите в терминале:
@@ -35,118 +35,118 @@ OpenRepo - сервер основанный на WEB для управлени�
     username(имя):    admin
     password(пароль): admin
 
-Если есть желание, можно перенаправить на .......... to point to an alternative PostgreSQL server by updating the "OPENREPO_PG" environment variables in the docker-compose file.
+Если есть желание, можно перенаправить на альтернативный сервер PostgreSQL изменив переменную среды "OPENREPO_PG" в файле docker-compose.
 
 
-## CI Integration
+## Применение непрерывной интеграции (CI)
 
-A common requirement is to automatically upload package files produced via Continuous Integration.  Please see the [OpenRepo Command-Line-Interface documentation](cli/) for more details.
+Общим требованием является автоматическая загрузка файлов пакетов, созданных с помощью непрерывной интеграции. См. [OpenRepo Command-Line-Interface documentation](cli/) для большей информации.
 
-The CLI program (or REST API) can be used to push new packages to a repo, and can also be used to promote or copy packages to other repos.
+Интерфейс командной строки (или REST API) может быть использован чтобы отправлять новые пакеты в репозиторий, а также продвигать и копировать пакеты в другие репозитории.
 
-## Users and Permissions
+## Пользователи и права
 
-There are two levels of users:
+Существует два типа пользователей:
 
-  1. **Super User** - Has read/write access to all repositories as well as administrative access to add/remove users, keys, and permissions
-  2. **Regular User** - Has read access to all repositories.  Write access must be granted explicitly for each repository
+  1. **Super User** / **Супер пользователь** - Имеет права на чтение и запись во все репозитории, а также доступ к админ-панели для добавления/удаления пользователей, ключей и разрешений.
+  2. **Regular User** / **Обычный пользователь** - Имеет право чтения всех репозиториев. Право на запись необходимо получать для каждого репозитория отдельно.
 
-Two add a new user:
-  1. As the super user, click on "System Admin" from the menu in the top-right
-  2. Click on the "Add" button next to the Users link
-  3. Add a username and password and click "Save"
-    - An API key is automatically created.  This can be deleted to disallow API access
-  4. To enable write access, click on the "Repositories" link, then click the repository where you wish this user to have write access.  Add the user to this list and save.
+Для добавления нового пользователя:
+  1. Будучи супер пользователем нажмите на "System Admin" из выпадающего меню с правого верхнего угла
+  2. Нажмите кнопку "Add" рядом с Users link
+  3. Добавьте **имя** и **пароль** и нажмите "Save"
+    - Ключ API создастся автоматически. Это можно удалить, чтобы убрать разрешение на доступ к API
+  4. Чтобы предоставить право записи, нажмите на ссылку "Repositories", затем нажмите на необходимый репозиторий. Добавьте пользователя в список и сохраните.
 
 
 ## REST API
 
 
-### Repo actions:
+### Действия с репозиториями:
 
-Repo UID is created when a new repo is created.  
+UID репозитория автоматически создается с самим репозиторием.  
 
-    # list names of repos along with IDs
+    # список имен репозиторие вместе с их UID
     GET /api/repos/
 
-    # Show details for a particular repo
-    GET /api/<repo>/
+    # показать доп. информацию по репозиторию
+    GET /api/<репозиторий>/
 
-    # Create a new repo
+    # создать новый репозиторий
     POST /api/repos/
 
-    # Delete a repo
-    DELETE /api/<repo>/
+    # удалить репозиторий
+    DELETE /api/<репозиторий>/
 
-### Package actions:
+### Действия с пакетами:
 
-Package UID is created when a new package is uploaded or copied
+UID пакета автоматически создается при загрузке/копировании пакета в репозиторий.
 
-    # List packages for a particular repo
-    GET /api/<repo>/packages/
+    # список пакетов конкретного репозитория
+    GET /api/<репозиторий>/packages/
 
-    # Upload a package to a repo
-    POST /api/<repo>/upload/
+    # загрузить пакет в репозиторий
+    POST /api/<репозиторий>/upload/
 
-    # Delete a package
-    DELETE /api/<repo>/pkg/<package>/
+    # удалить пакет в репозитории
+    DELETE /api/<репозиторий>/pkg/<пакет>/
 
-    # Show details for a particular package
-    GET /api/<repo>/pkg/<package>/
+    # показать доп. информацию по пакету
+    GET /api/<репозиторий>/pkg/<пакет>/
 
-    # Copy a package to another repo
-    POST /api/<repo>/pkg/<package>/copy/
+    # скопировать пакет в другой репозиторий
+    POST /api/<репозиторий>/pkg/<пакет>/copy/
 
-### Signing Key actions:
+### Действия с ключами подписи:
 
-The signing key ID is the fingerprint of the PGP key and is created when the key is uploaded or created
+ID ключа подписи это отпечаток PGP ключа и создается автоматически, когда ключ загружается или создается.
 
-    # List all signing keys
+    # список всех ключей подписи
     GET /api/signingkeys/
 
-    # Create a new signing key
+    # создать ключ подписи
     POST /api/signingkeys/
 
-    # Delete a signing key
-    DELETE /api/signingkeys/<signingkey>/
+    # удалить ключ подписи
+    DELETE /api/signingkeys/<ключ подписи>/
 
 
-# Development
+# Разработка
 
 
-## Architecture
+## Архитектура
 
-OpenRepo consists of four running processes:
+OpenRepo состоит из 4 запущенных процессов:
 
-### Nginx web server
+### Nginx web-сервер
 
-The web server hosts the static file content.  This includes the "frontend" generated content (Vue/Vuetify) as well as the images and repo files.
+На web-сервере размещены статические содержимые файлов. Это включает в себя содержимое, сгенерированное папкой "frontend" (такие как Vue/Vuetify) а так же изображения и файлы репозиториев.
 
-The web server also serves as a proxy for the Django endpoints.  These are primarily the REST API and the admin interface.
+Web-сервер также служит как прокси для конечных точек Django. Это в основном REST API и панель админа.
 
-The Nginx web port is the only port that should be exposed to network traffic.
+Web-порт Nginx единственный порт, который должен быть открыт для сетевого траффика.
 
-### The Django app server
+### Сервер приложения Django
 
-The app server hosts the REST API which is the primary way for the frontend and CLI to interact with the application.  There are also a few static pages (e.g., the admin interface, password change forms, etc) that are proxied through to Django.
+На сервере приложения размещены REST API, который является основным для вёрстки, и CLI для взаимодействия с приложением.  Также здесь хранятся несколько статических страниц (Например, интерфейс админа, форма смены пароля и т.п.), которые проксируются через Django.
 
-### The Django worker
+### Django worker
 
-The worker runs as a background process and communicates exclusively with the database server.  The Django worker is responsible for generating metadata when the repos are updated (i.e., packages are uploaded or deleted).  This process uses OS tools to create the repos and symlinks the files to their appropriate locations.  Some repo generating tools may make use of a cache to store things such as hash information to speed up subsequent repo updates.
+Worker запускается как фоновый процесс и коммуницирует только с сервером базы данных. Django worker ответственен за создание мета-данных когда репозиторий обновляется (или когда пакеты загружаются или удаляются). Этот процесс использует инструменты Операционной Системы (ОС) чтобы создать репозитории и связать файлы с их соответствующими расположениями. Некоторые инструменты генерации могут использовать для успокрения обновления репозиториев кеш (для хранения таких вещей как хеш-информация).
 
-### The Database
+### База данных
 
-By default OpenRepo uses PostgreSQL.  Using other databases are possible (e.g., SQLite to simplify development), however PostgreSQL is recommended for production.
+По умолчанию OpenRepo использует базу данных PostgreSQL. Есть возможность использовать и другие базы данных (Например, SQLite для упрощенной разработки), однако PostgreSQL рекомендуется.
 
 
 
-## Dev Env Setup
+## Настрйока окружения разработки
 
-Running the above components individually is the best way to test modifications to the source code.
+Запуск вышеперечисленных компонентов по отдельности - лучший подход к тестированию модификаций к коду.
 
-The first step is to add a file named web/openrepo/settings_local.py and apply any environment variable overrides for development.  
+Первым шагом стоит добавить файл **web/openrepo/settings_local.py** и применить любое переопределение переменной среды для разработки.  
 
-For example, the following settings_local.py file will configure your environment to use developer-friendly settings.
+Например, следующий файл **settings_local.py* настроит Ваше окружение максимально удобным для разработки.
 
 
     import os
@@ -157,12 +157,12 @@ For example, the following settings_local.py file will configure your environmen
     os.environ["OPENREPO_LOGLEVEL"] = "DEBUG"
 
 
-Next, open four separate tabs and run the following commands:
+Затем, откройте 4 независимых вкладки (командной строки) и запустите следующие команды:
 
-    Tab 1: cd web; ./manage.py runserver
-    Tab 2: cd web; ./manage.py runworker
-    Tab 3: cd frontend; npm run dev
-    Tab 4: nginx -c /storage/projects/openrepo/deploy/nginx/nginx.conf.dev
+    Вкладка 1: cd web; ./manage.py runserver
+    Вкладка 2: cd web; ./manage.py runworker
+    Вкладка 3: cd frontend; npm run dev
+    Вкладка 4: nginx -c /storage/projects/openrepo/deploy/nginx/nginx.conf.dev
 
 
-Next, navigate to http://localhost:5173/ to see your code updates.  Both the Vue.js dev server and the Django dev server support live updates on code changes.  
+Наконец, проследуйте на http://localhost:5173/ чтобы увидеть ваши изменения. Сервер разработки Vue.js и Django поддерживают обновление по мере изменения кода (в режиме реального времени).  
