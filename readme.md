@@ -22,9 +22,15 @@ OpenRepo - сервер основанный на WEB для управлени�
  Для начала убедитесь, что у Вас установлен [Docker](https://docker-docs.netlify.app/install/#server) и [Docker Compose plugin](https://docker-docs.netlify.app/compose/install/)
 
 
-Чтобы запустить сервер пропишите в терминале:
+Чтобы запустить сервер пропишите поочередно команды в терминале:
 
-    wget https://raw.githubusercontent.com/dushenka/ORPersonal/master/docker-compose.yml
+    wget https://github.com/dushenka/ORPersonal/archive/master.zip
+    
+    unzip master.zip
+    
+    cd ORPersonal-master
+    
+    docker-compose build
     
     docker-compose up -d
 
