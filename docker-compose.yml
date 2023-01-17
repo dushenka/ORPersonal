@@ -1,11 +1,11 @@
 version: "3.9"
 services:
   nginx:
-    image: dushenka/ORPersonal:latest
+    image: ./
     command: nginx
     restart: unless-stopped
     ports:
-      - "7376:8080"
+      - "80:8080"
     depends_on:
       - "django"
     volumes:
@@ -14,7 +14,7 @@ services:
 
 
   django:
-    image: dushenka/ORPersonal:latest
+    image: ./
     expose:
       - "8000"
     command: run_openrepoweb
@@ -32,7 +32,7 @@ services:
 
 
   worker:
-    image: dushenka/ORPersonal:latest
+    image: ./
     command: ./django/manage.py runworker
     volumes:
       - ./openrepo-data:/var/lib/openrepo
