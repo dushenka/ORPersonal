@@ -81,8 +81,12 @@
                     <span class="text-caption ml-4">{{selected_pkgs.length}} selected</span>
                 </div>
             </v-col>
-            <v-col align="right" cols="4" >
-
+            <v-col align="right" cols="5" >
+            
+                <DialogDownloadPackages
+                :repo_uid="this.repo_uid"
+                :selected_pkgs="this.selected_pkgs"/>
+                
                 <DialogCopyPackages 
                 :repo_uid="this.repo_uid" 
                 :selected_pkgs="this.selected_pkgs"
