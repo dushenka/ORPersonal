@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   nginx:
-    image: ./
+    build: ./
     command: nginx
     restart: unless-stopped
     ports:
@@ -14,7 +14,7 @@ services:
 
 
   django:
-    image: ./
+    build: ./
     expose:
       - "8000"
     command: run_openrepoweb
@@ -32,7 +32,7 @@ services:
 
 
   worker:
-    image: ./
+    build: ./
     command: ./django/manage.py runworker
     volumes:
       - ./openrepo-data:/var/lib/openrepo
